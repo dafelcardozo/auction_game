@@ -17,9 +17,9 @@ import lusca from 'lusca';
 import config from './environment';
 import passport from 'passport';
 import session from 'express-session';
-import connectMongo from 'connect-mongo';
+//import connectMongo from 'connect-mongo';
 import mongoose from 'mongoose';
-var MongoStore = connectMongo(session);
+//var MongoStore = connectMongo(session);
 
 export default function(app) {
   var env = app.get('env');
@@ -49,6 +49,7 @@ export default function(app) {
   // Persist sessions with MongoStore / sequelizeStore
   // We need to enable sessions for passport-twitter because it's an
   // oauth 1.0 strategy, and Lusca depends on sessions
+  /*
   app.use(session({
     secret: config.secrets.session,
     saveUninitialized: true,
@@ -58,7 +59,7 @@ export default function(app) {
       db: 'auction-game'
     })
   }));
-
+*/
   /**
    * Lusca - express server security
    * https://github.com/krakenjs/lusca
