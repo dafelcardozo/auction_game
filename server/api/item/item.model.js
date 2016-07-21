@@ -9,7 +9,11 @@ export default function(sequelize, DataTypes) {
       autoIncrement: true
     },
     name: DataTypes.STRING,
-    description: DataTypes.STRING//,
+    description: DataTypes.STRING,
+    created_at:DataTypes.DATE,
+    image:DataTypes.BLOB
+
+    //,
     //active: DataTypes.BOOLEAN
   });
 }

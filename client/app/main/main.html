@@ -1,17 +1,16 @@
-<div ng-controller="itemsCtrl" flex>
-  <md-card ng-repeat="im in images">
-    <img ng-src="assets/images/{{im}}" class="md-card-image" alt="image caption">
-    <md-card-content>
-      <h2>Card headline</h2>
-      <p>Card content</p>
-    </md-card-content>
-    <md-card-actions layout="row" layout-align="end center">
-      <md-button>Action 1</md-button>
-      <md-button>Action 2</md-button>
-    </md-card-actions>
-  </md-card>
 
-</div>
+<md-card ng-repeat="i in $ctrl.items">
+  <img ng-src="data:image/png;base64,{{i.converted}}" >
+  <md-card-content>
+    <h2>{{i.name}}</h2>
+    <p>{{i.description}}</p>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="end center">
+    <md-button>Action 1</md-button>
+    <md-button>Action 2</md-button>
+  </md-card-actions>
+</md-card>
+
 
 <!--
 <header class="hero-unit" id="banner">
@@ -21,8 +20,8 @@
     <img src="assets/images/yeoman.png" alt="I'm Yeoman">
   </div>
 </header>
- -->
-<!-- <div class="container">
+
+ <div class="container">
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Features:</h1>
@@ -41,5 +40,6 @@
       </span>
     </p>
   </form>
-</div> -->
+</div>
 
+-->
