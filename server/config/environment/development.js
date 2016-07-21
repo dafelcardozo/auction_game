@@ -4,21 +4,28 @@
 // ==================================
 module.exports = {
 
-  // MongoDB connection options
-  mongo: {
-    uri: 'mongodb://localhost/auctiongame-dev'
-  },
-
   // Sequelize connection opions
   sequelize: {
-    uri: 'sqlite://',
+    dialect:'mysql',
+    driver:'mysql',
+    user:'root',
+    host:'localhost',
+    uri: 'auction_game',
     options: {
       logging: false,
-      storage: 'dev.sqlite',
+      storage: 'dev.mysql',
       define: {
         timestamps: false
       }
-    }
+    },
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 10000
+    },
+   /* define: {
+      paranoid: true
+    }*/
   },
 
   // Seed database on startup
