@@ -42,22 +42,19 @@ router.get('/:id/inventory', function (req, res) {
 	.catch(handleError(res));
 });
 router.get('/:id/inventory/gift', function (req, res) {
-   //var userId = req.params.id;  
   return Item.findAll()
-  .then(function (inventories){
-    let ii = inventories.map(function(item) {  
+  .then(inventories => 
+ Inventory
+    .bulkCreate(inventories.map(item => {  
         return {
         UserId:req.params.id, 
         ItemId:item.id
       }
-    });
-    return Inventory
-    .bulkCreate(ii)
+    }))
     .then(() => 
        res.status(200).end()
     ).catch(handleError(res))
-    ;
-  });
+  );
 });
 
 module.exports = router;
