@@ -1,6 +1,6 @@
 'use strict';
 
-import {User} from '../../sqldb';
+import {User, Inventory, Item} from '../../sqldb';
 import passport from 'passport';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
@@ -46,12 +46,31 @@ export function create(req, res, next) {
   var newUser = User.build(req.body);
   newUser.setDataValue('provider', 'local');
   newUser.setDataValue('role', 'user');
+  console.info("Create user");
   return newUser.save()
     .then(function(user) {
+
+
+      console.info("1");
+
+  Item.findAll()
+  .then(inventories => {
+    Inventory
+    .bulkCreate(inventories.map(item => ({
+        UserId:user._id, 
+        ItemId:item.id
+      })))
+    .then(() => {
       var token = jwt.sign({ _id: user._id }, config.secrets.session, {
         expiresIn: 60 * 60 * 5
       });
       res.json({ token });
+    }).catch(handleError(res));
+  }
+  );
+
+
+
     })
     .catch(validationError(res));
 }

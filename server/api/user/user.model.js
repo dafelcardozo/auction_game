@@ -100,6 +100,12 @@ module.exports = function(sequelize, DataTypes) {
           return user.updatePassword(fn);
         }
         fn();
+      },
+       afterCreate: function(user, options) {
+          console.info("afterCreate");
+        // models.Config.create({
+        //   UserId: user.id
+        // })
       }
     },
 

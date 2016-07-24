@@ -30,31 +30,28 @@ router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
 router.get('/:id/inventory', function (req, res) {
-  console.info("En la función de inventorio, req.params.id: "+req.params.id);
-  return Inventory.findAll(
-  		{
-	    where: {
-	      userId: req.params.id
-	    }
-	  }
-	  )
+  return Inventory.findAll({
+    where: {
+      userId: req.params.id
+    },
+    include:[Item]
+  })
 	.then(respondWithResult(res))
 	.catch(handleError(res));
 });
+
 router.get('/:id/inventory/gift', function (req, res) {
-  return Item.findAll()
+  return 
+  Item.findAll()
   .then(inventories => 
- Inventory
-    .bulkCreate(inventories.map(item => {  
-        return {
+    Inventory
+    .bulkCreate(inventories.map(item => ({
         UserId:req.params.id, 
         ItemId:item.id
-      }
-    }))
+      })))
     .then(() => 
        res.status(200).end()
     ).catch(handleError(res))
   );
 });
-
 module.exports = router;
