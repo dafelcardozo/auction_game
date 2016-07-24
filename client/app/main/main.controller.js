@@ -1,25 +1,27 @@
 'use strict';
 
-
-
-
 (function() {
-
-
-
   class MainController {
     constructor($http, $scope, socket, Auth, $mdDialog) {
       this.$http = $http;
       this.socket = socket;
       this.getCurrentUser = Auth.getCurrentUser;
       this.$mdDialog = $mdDialog;
+      this.auctions = [];
+      this.auction = {};
 
       $scope.$on('$destroy', function() {
-        socket.unsyncUpdates('item');
+        socket.unsyncUpdates('auctions');
       });
     }
 
+    setAuction(a) {
+      this.auction = a;
+    }
+
     $onInit() {
+      let scope = this;
+      this.socket.syncUpdates('auction', this.auctions, (m, a) => scope.a = a);
       this.getCurrentUser(u => this.$http.get('/api/users/'+u._id+'/inventory')
       .then(response => this.items = response.data));
     }
@@ -27,12 +29,14 @@
 
   startAuction(ev, item) {
     var useFullScreen = true;
+    let io = this.socket;
 
-    function DialogController($scope, $mdDialog, $http, Auth) {
+    function DialogController($scope, $mdDialog, $http, Auth, socket) {
       $scope.item = item;
       $scope.quantity;
       $scope.minimum_bid;
       $scope.getCurrentUser = Auth.getCurrentUser;
+      $scope.socket = socket;
 
       $scope.hide = function() {
         $mdDialog.hide();
@@ -48,10 +52,11 @@
           $http.post("/api/auctions/", {
             minimum_bid:$scope.minimum_bid,
             quantity:$scope.quantity,
-            ItemId:item.id,
+            ItemId:$scope.item.id,
             UserId:u._id
-          }).then(function () {
+          }).then(function (response) {
             $mdDialog.cancel();
+            io.socket.emit('auctions', response.data);
           });        
         });
       };
@@ -79,11 +84,9 @@
   }
 }
 
-  angular.module('auctionGameApp')
-    .component('main', {
-      templateUrl: 'app/main/main.html',
-      controller: MainController
-    });
+angular.module('auctionGameApp')
+  .component('main', {
+    templateUrl: 'app/main/main.html',
+    controller: MainController
+  });
 })();
-
-

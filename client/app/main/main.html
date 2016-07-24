@@ -19,23 +19,29 @@
    </md-card-title-media>
   </md-card-title>
   <md-card-actions layout="row" layout-align="end center">
-    <md-button ng-click="$ctrl.startAuction($event, item)">Start auction</md-button>
+    <md-button ng-click="$ctrl.startAuction($event, item.Item)">Start auction for item {{item.Item.id}}</md-button>
   </md-card-actions>
 </md-card>
 
-  </md-content>
+  </md-content >
 
-<md-toolbar class="md-theme-light">
+<md-toolbar class="md-theme-light" >
   <h2 class="md-toolbar-tools">
-    <span>Current Action</span>
+    <span>Current Auction</span>
   </h2>
 </md-toolbar>
 <md-content>
-  <div ng-show="auction">
+  <p ng-hide="$ctrl.auction">No current auction</p>
+  <p ng-show="$ctrl.auction">
+    <md-button>Place bid</md-button>
+    
+  </p>
+  <p>auction: {{$ctrl.auctions}}</p>
+<!--   <div ng-show="auction">
     Seller: 
     <img ng-src="{{auction.Item.image}}" alt="Item image" />
 
-  </div>
+  </div> -->
   
 </md-content>
 </div>
