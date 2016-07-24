@@ -1,20 +1,20 @@
 <div flex-xs flex-gt-xs="50" layout="column">
 	
-	<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch ng-repeat="i in $ctrl.items">
+	<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch ng-repeat="item in $ctrl.items">
         <md-card-title>
           <md-card-title-text>
-            <span class="md-headline">{{i.name}}</span>
-            <span class="md-subhead">{{i.description}}</span>
+            <span class="md-headline">{{item.name}}</span>
+            <span class="md-subhead">{{item.description}}</span>
+            <span>Quantity: {{item.quantity}}</span>
           </md-card-title-text>
           <md-card-title-media>
             <div class="md-media-md card-media">
-            	<img ng-src="{{i.image}}" >
+            	<img ng-src="{{item.Item.image}}" >
             </div>
           </md-card-title-media>
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
-          <md-button>Action 1</md-button>
-          <md-button>Action 2</md-button>
+          <md-button ng-click="$ctrl.startAuction($event, item)">Start auction</md-button>
         </md-card-actions>
       </md-card>
 </div>
