@@ -1,51 +1,51 @@
+<div layout="row">
+  
 <div flex-xs flex-gt-xs="50" layout="column" >
-	<md-toolbar >
+  <md-toolbar >
     <h2 class="md-toolbar-tools">
-      <span>Inventory</span>
+      <span>Your inventory</span>
     </h2>
   </md-toolbar>
   <md-content>
-    <md-card  ng-repeat="item in $ctrl.items">
-  <md-card-title>
-    <md-card-title-text>
-      <span class="md-headline">{{item.name}}</span>
-      <span class="md-subhead">{{item.description}}</span>
-      <span>Quantity: {{item.quantity}}</span>
-    </md-card-title-text>
-    <md-card-title-media>
-      <div class="md-media-md card-media">
-       <img ng-src="{{item.Item.image}}" >
-     </div>
-   </md-card-title-media>
-  </md-card-title>
-  <md-card-actions layout="row" layout-align="end center">
-    <md-button ng-click="$ctrl.startAuction($event, item.Item)">Start auction for item {{item.Item.id}}</md-button>
-  </md-card-actions>
-</md-card>
+    <md-card  ng-repeat="item in items">
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">{{item.Item.name}}</span>
+          <span class="md-subhead">{{item.Item.description}}</span>
+          <span>Available quantity: {{item.quantity}}</span>
+        </md-card-title-text>
+        <md-card-title-media>
+          <div class="md-media-md card-media">
+           <img ng-src="{{item.Item.image}}" >
+         </div>
+       </md-card-title-media>
+     </md-card-title>
+     <md-card-actions layout="row" layout-align="end center">
+      <md-button ng-click="startAuction($event, item.Item)">Start auction</md-button>
+    </md-card-actions>
+  </md-card>
+</md-content>
 
-  </md-content >
+</div>
 
-<md-toolbar class="md-theme-light" >
+<div layout="column">
+  <md-toolbar class="md-theme-light" >
   <h2 class="md-toolbar-tools">
     <span>Current Auction</span>
   </h2>
 </md-toolbar>
 <md-content>
-  <p ng-hide="$ctrl.auctions.length">No auction at the moment.</p>
-  <div ng-show="$ctrl.auctions.length" ng-repeat="auction in $ctrl.auctions">
-    
-    <p>Seller: </p>
+  <p ng-hide="auctions.length">No auction at the moment.</p>
+  <div ng-show="auctions.length" ng-repeat="auction in auctions">
+    <p>Seller: {{auction.User.name}}</p>
     <p><img src="{{auction.Item.image}}" alt="{{auction.Item.image}}"></p>
     <p>Item: {{auction.Item.name}}</p>
     <p>Quantity: {{auction.quantity}}</p>
-    <p>Time to: in {{$ctrl.timer}} seconds</p>
+    <p>Minimum bid: {{auction.minimum_bid}}</p>
+    <p>Time to: in {{timer}} seconds</p>
     <md-button>Place bid</md-button>
   </div>
-<!--   <div ng-show="auction">
-    Seller: 
-    <img ng-src="{{auction.Item.image}}" alt="Item image" />
-
-  </div> -->
-  
 </md-content>
+</div>
+
 </div>

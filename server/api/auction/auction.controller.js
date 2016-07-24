@@ -10,7 +10,7 @@
 'use strict';
 
 import _ from 'lodash';
-import {Auction, Item} from '../../sqldb';
+import {Auction, Item, User} from '../../sqldb';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -51,6 +51,17 @@ function handleEntityNotFound(res) {
   };
 }
 
+
+function handleEntityNotFound200(res) {
+  return function(entity) {
+    if (!entity) {
+      res.status(200).end();
+      return null;
+    }
+    return entity;
+  };
+}
+
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
   return function(err) {
@@ -80,8 +91,16 @@ export function show(req, res) {
 
 // Creates a new Auction in the DB
 export function create(req, res) {
-  return Auction.create(req.body)
-    .then(respondWithResult(res, 201))
+  return Auction.create(req.body, {include:[Item]})
+    .then(function (a){
+      Auction.find({
+        where: {
+          id:a.id
+        },
+        include:[Item]
+      })
+      .then(respondWithResult(res));
+    })
     .catch(handleError(res));
 }
 
@@ -102,16 +121,15 @@ export function update(req, res) {
 }
 
 export function current(req, res) {
-  console.info("looking for the current auction");
   return Auction.find({
     where: {
       expiresAt: {
          $gt: new Date()
       }
     },
-    include:[Item]
+    include:[Item, User]
   })
-  .then(handleEntityNotFound(res))
+  .then(handleEntityNotFound200(res))
   .then(respondWithResult(res))
   .catch(handleError(res));
 }

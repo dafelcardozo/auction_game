@@ -1,69 +1,57 @@
 'use strict';
 
 (function() {
-  class MainController {
-    constructor($http, $scope, socket, Auth, $mdDialog, $interval) {
-      this.$http = $http;
-      this.socket = socket;
-      this.getCurrentUser = Auth.getCurrentUser;
-      this.$mdDialog = $mdDialog;
-      this.auctions = [];
-      this.timer = 0;
-      this.$interval = $interval;
-      this.$watch = $scope.$watch;
+  function MainController($http, $scope, socket, Auth, $mdDialog, $interval) {
+      $scope.getCurrentUser = Auth.getCurrentUser;
+      $scope.auctions = [];
+      $scope.timer = 0;
 
+      $scope.items = [];
       $scope.$on('$destroy', function() {
-        socket.unsyncUpdates('auctions');
-      });
-    }
+        socket.unsyncUpdates('auction');
+      });    
 
-    timeToCloseAuction(date) {
-      console.info("date: "+date);
-      var a = moment(new Date());
-      var b = moment(date);
-      return b.diff(a, 'seconds');
-    }
-    
-
-    currentAuction() {
-      let scope = this;
+    $scope.currentAuction = function() {
+      let scope = $scope;
       let timeToExpireFirst = function() {
-        var a = moment(new Date());
-        var b = moment(scope.auctions[0].expiresAt);
-        scope.timer = b.diff(a, 'seconds');
-        if (scope.timer <= 0)
-          scope.auctions.shift();
+        if ($scope.auctions.length) {
+          var a = moment(new Date());
+          var b = moment(scope.auctions[0].expiresAt);
+          scope.timer = b.diff(a, 'seconds');
+          if (scope.timer <= 0)
+            scope.auctions.shift();
+        }
         
       };
-      this.$http.get("/api/auctions/current/current")
+      $http.get("/api/auctions/current/current")
       .then(response => {
-        this.auctions = [response.data];
+        $scope.auctions = [response.data];
         timeToExpireFirst(); 
-        this.$interval(timeToExpireFirst, 1000);
+        $interval(timeToExpireFirst, 1000);
         
       });
-    }
-    $onInit() {
-      console.info("$watch: "+this.$watch);
-      this.socket.syncUpdates('auction', this.auctions);
+    };
 
-      this.getCurrentUser(u => this.$http.get('/api/users/'+u._id+'/inventory')
-      .then(response => this.items = response.data));
-      this.currentAuction();
-    }
+      socket.syncUpdates('auction', $scope.auctions, function(event, item, object) {
+         $scope.currentAuction();
+      });
+
+      $scope.getCurrentUser(u => 
+        $http.get('/api/users/'+u._id+'/inventory')
+        .then(response => $scope.items = response.data));
+
+    $scope.currentAuction();
 
 
-
-    startAuction(ev, item) {
+    $scope.startAuction = function (ev, item) {
       var useFullScreen = true;
-      let io = this.socket;
 
       function DialogController($scope, $mdDialog, $http, Auth, socket) {
         $scope.item = item;
         $scope.quantity;
         $scope.minimum_bid;
         $scope.getCurrentUser = Auth.getCurrentUser;
-        $scope.socket = socket;
+        $scope.io = socket;
 
         $scope.hide = function() {
           $mdDialog.hide();
@@ -81,15 +69,17 @@
               quantity:$scope.quantity,
               ItemId:$scope.item.id,
               UserId:u._id
-            }).then(function (response) {
+            }).then(function (response) {              
               $mdDialog.cancel();
-              io.socket.emit('auctions', response.data);
+              $scope.io.socket.emit('auction', [{"angukar":"puta mierda"}]);
+            }, function(error){
+              console.info("error:"+error);
             });        
           });
         };
       }
 
-      this.$mdDialog.show({
+      $mdDialog.show({
         controller: DialogController,
         templateUrl: 'dialog.html',
         parent: angular.element(document.body),

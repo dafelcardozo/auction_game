@@ -49,10 +49,6 @@ export function create(req, res, next) {
   console.info("Create user");
   return newUser.save()
     .then(function(user) {
-
-
-      console.info("1");
-
   Item.findAll()
   .then(inventories => {
     Inventory

@@ -1,43 +1,11 @@
-<!--
-<div class="navbar navbar-default navbar-static-top" >
-  <div class="container">
-    <div class="navbar-header">
-      <button class="navbar-toggle" type="button" ng-click="nav.isCollapsed = !nav.isCollapsed">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="/" class="navbar-brand">auction-game</a>
-    </div>
-    <div uib-collapse="nav.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-      <ul class="nav navbar-nav">
-        <li ng-repeat="item in nav.menu" ng-class="{active: nav.isActive(item.link)}">
-            <a ng-href="{{item.link}}">{{item.title}}</a>
-        </li>
-        <li ng-show="nav.isAdmin()" ng-class="{active: nav.isActive('/admin')}"><a href="/admin">Admin</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-        <li ng-hide="nav.isLoggedIn()" ng-class="{active: nav.isActive('/signup')}"><a href="/signup">Sign up</a></li>
-        <li ng-hide="nav.isLoggedIn()" ng-class="{active: nav.isActive('/login')}"><a href="/login">Login</a></li>
-        <li ng-show="nav.isLoggedIn()"><p class="navbar-text">Hello {{ nav.getCurrentUser().name }}</p> </li>
-        <li ng-show="nav.isLoggedIn()" ng-class="{active: nav.isActive('/settings')}"><a href="/settings"><span class="glyphicon glyphicon-cog"></span></a></li>
-        <li ng-show="nav.isLoggedIn()"><a href="/logout">Logout</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
--->
 <md-toolbar ng-controller="NavbarController">
   <div class="md-toolbar-tools"  ngCloak>
     <span>This is my angular App</span>
     <div ng-hide="nav.isLoggedIn()" ng-class="{active: nav.isActive('/login')}"><a href="/login">Login</a></div>
-    <div ng-show="nav.isLoggedIn()"><p class="navbar-text">Hello {{ nav.getCurrentUser().name }}</p> </div>
-    <img ng-show="nav.isLoggedIn()" src="assets/images/coin.jpg" width="50" height="50" alt="coins">
+    <div ng-show="nav.isLoggedIn()"><p class="navbar-text">User: {{ nav.getCurrentUser().name }}</p></div>
+    <!-- <img ng-show="nav.isLoggedIn()" src="assets/images/coin.jpg" width="50" height="50" alt="coins"> -->
     <md-button href="/logout" ng-show="nav.isLoggedIn()">
       Logout
     </md-button>
-    <md-button ng-click="nav.hello()">hello</md-button>
   </div>
 </md-toolbar>
