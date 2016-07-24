@@ -10,6 +10,7 @@
       this.auctions = [];
       this.timer = 0;
       this.$interval = $interval;
+      this.$watch = $scope.$watch;
 
       $scope.$on('$destroy', function() {
         socket.unsyncUpdates('auctions');
@@ -43,7 +44,9 @@
       });
     }
     $onInit() {
+      console.info("$watch: "+this.$watch);
       this.socket.syncUpdates('auction', this.auctions);
+
       this.getCurrentUser(u => this.$http.get('/api/users/'+u._id+'/inventory')
       .then(response => this.items = response.data));
       this.currentAuction();

@@ -21,6 +21,7 @@
     { "start": "start-non-standard", "end": "end-non-standard" }
   ],
   "globals": {
+    "multistr": true,
     "jQuery": true,
     "angular": true,
     "console": true,
