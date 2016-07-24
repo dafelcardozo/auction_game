@@ -10,7 +10,7 @@
 'use strict';
 
 import _ from 'lodash';
-import {Auction} from '../../sqldb';
+import {Auction, Item} from '../../sqldb';
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -70,7 +70,8 @@ export function show(req, res) {
   return Auction.find({
     where: {
       _id: req.params.id
-    }
+    },
+    include:[Item]
   })
     .then(handleEntityNotFound(res))
     .then(respondWithResult(res))
@@ -105,11 +106,12 @@ export function current(req, res) {
   return Auction.find({
     where: {
       expiresAt: {
-         $lt: new Date()
+         $gt: new Date()
       }
-    }
+    },
+    include:[Item]
   })
-  // .then(handleEntityNotFound(res))
+  .then(handleEntityNotFound(res))
   .then(respondWithResult(res))
   .catch(handleError(res));
 }

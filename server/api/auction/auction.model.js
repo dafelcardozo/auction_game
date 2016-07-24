@@ -14,7 +14,11 @@ export default function(sequelize, DataTypes) {
     quantity:DataTypes.INTEGER,
     expiresAt:{
       type:DataTypes.DATE,
-      defaultValue:new Date(new Date() +  90 * 1000)
+      defaultValue:function() {
+        var t = new Date();
+        t.setSeconds(t.getSeconds() + 90);
+        return t;
+      }
     }
   }, {
     classMethods: {

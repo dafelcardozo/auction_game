@@ -31,12 +31,16 @@
   </h2>
 </md-toolbar>
 <md-content>
-  <p ng-hide="$ctrl.auction">No auction at the moment.</p>
-  <p ng-show="$ctrl.auction">
-    <md-button>Place bid</md-button>
+  <p ng-hide="$ctrl.auctions.length">No auction at the moment.</p>
+  <div ng-show="$ctrl.auctions.length" ng-repeat="auction in $ctrl.auctions">
     
-  </p>
-  <p>auction: {{$ctrl.auctions}}</p>
+    <p>Seller: </p>
+    <p><img src="{{auction.Item.image}}" alt="{{auction.Item.image}}"></p>
+    <p>Item: {{auction.Item.name}}</p>
+    <p>Quantity: {{auction.quantity}}</p>
+    <p>Time to: in {{$ctrl.timer}} seconds</p>
+    <md-button>Place bid</md-button>
+  </div>
 <!--   <div ng-show="auction">
     Seller: 
     <img ng-src="{{auction.Item.image}}" alt="Item image" />

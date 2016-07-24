@@ -2,40 +2,52 @@
 
 (function() {
   class MainController {
-    constructor($http, $scope, socket, Auth, $mdDialog) {
+    constructor($http, $scope, socket, Auth, $mdDialog, $interval) {
       this.$http = $http;
       this.socket = socket;
       this.getCurrentUser = Auth.getCurrentUser;
       this.$mdDialog = $mdDialog;
       this.auctions = [];
-      this.auction = {};
+      this.timer = 0;
+      this.$interval = $interval;
+      //.auction = {};
 
       $scope.$on('$destroy', function() {
         socket.unsyncUpdates('auctions');
       });
     }
 
-    $onInit() {
-      let scope = this;
-      console.info("pissing in my vagina");
+    timeToCloseAuction(date) {
+      console.info("date: "+date);
+      var a = moment(new Date());
+      var b = moment(date);
+      return b.diff(a, 'seconds');
+    }
+    
 
-      this.socket.syncUpdates('auction', this.auctions, (m, a) => scope.a = a);
+    currentAuction() {
+      let scope = this;
+      let timeToExpireFirst = function() {
+        var a = moment(new Date());
+        var b = moment(scope.auctions[0].expiresAt);
+        scope.timer = b.diff(a, 'seconds');
+      };
+      this.$http.get("/api/auctions/current/current")
+      .then(response => {
+        this.auctions = [response.data];
+        timeToExpireFirst(); 
+        this.$interval(timeToExpireFirst, 1000);
+        
+      });
+    }
+    $onInit() {
+      this.socket.syncUpdates('auction', this.auctions);
       this.getCurrentUser(u => this.$http.get('/api/users/'+u._id+'/inventory')
       .then(response => this.items = response.data));
-      console.info("pissing in my popo");
       this.currentAuction();
     }
 
-    currentAuction() {
-      let pipi = this;
-      console.info("pissing in my shit");
-      this.$http.get("/api/auctions/current/current")
-      .then(response => {
-        console.info("Setted auction: "+response.data);
-        this.auctions = response.data; 
 
-      });
-    }
 
     startAuction(ev, item) {
       var useFullScreen = true;
