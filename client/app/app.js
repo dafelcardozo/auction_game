@@ -11,11 +11,4 @@ angular.module('auctionGameApp', ['auctionGameApp.auth', 'auctionGameApp.admin',
     });
 
     $locationProvider.html5Mode(true);
-  })
-  .controller('toolbarCtrl', function($scope, Auth){
-    $scope.user = 'Felipe';
-    $scope.amount = 2450;
-    Auth.getCurrentUser(u => {
-      console.info("Checking Auth.getCurrentUser: "+JSON.stringify(u));
-    });
   });

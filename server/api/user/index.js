@@ -40,18 +40,4 @@ router.get('/:id/inventory', function (req, res) {
 	.catch(handleError(res));
 });
 
-router.get('/:id/inventory/gift', function (req, res) {
-  return 
-  Item.findAll()
-  .then(inventories => 
-    Inventory
-    .bulkCreate(inventories.map(item => ({
-        UserId:req.params.id, 
-        ItemId:item.id
-      })))
-    .then(() => 
-       res.status(200).end()
-    ).catch(handleError(res))
-  );
-});
 module.exports = router;

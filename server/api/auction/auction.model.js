@@ -10,7 +10,8 @@ export default function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    minimum_bid:DataTypes.INTEGER
+    minimum_bid:DataTypes.INTEGER,
+    quantity:DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {

@@ -20,38 +20,40 @@
     }
 
     $onInit() {
-      this.getCurrentUser(u => 
-        this.$http.get('/api/users/'+u._id+'/inventory')
-          .then(response => this.items = response.data))
-      ;
-    }
-
-    hello() {
-      alert("hello");
+      this.getCurrentUser(u => this.$http.get('/api/users/'+u._id+'/inventory')
+      .then(response => this.items = response.data));
     }
 
 
   startAuction(ev, item) {
     var useFullScreen = true;
 
-    function DialogController($scope, $mdDialog) {
+    function DialogController($scope, $mdDialog, $http, Auth) {
       $scope.item = item;
       $scope.quantity;
-      $scope.minimumBid;
+      $scope.minimum_bid;
+      $scope.getCurrentUser = Auth.getCurrentUser;
 
       $scope.hide = function() {
-        console.info("Here and there");
         $mdDialog.hide();
       };
       $scope.cancel = function() {
-        console.info("Here and there");
         $mdDialog.cancel();
       };
       $scope.answer = function(answer) {
         $mdDialog.hide(answer);
       };
       $scope.start = function() {
-        console.info("Start auction");
+        $scope.getCurrentUser(u =>{
+          $http.post("/api/auctions/", {
+            minimum_bid:$scope.minimum_bid,
+            quantity:$scope.quantity,
+            ItemId:item.id,
+            UserId:u._id
+          }).then(function () {
+            $mdDialog.cancel();
+          });        
+        });
       };
     }
 
