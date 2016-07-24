@@ -10,7 +10,6 @@
       this.auctions = [];
       this.timer = 0;
       this.$interval = $interval;
-      //.auction = {};
 
       $scope.$on('$destroy', function() {
         socket.unsyncUpdates('auctions');
@@ -31,6 +30,9 @@
         var a = moment(new Date());
         var b = moment(scope.auctions[0].expiresAt);
         scope.timer = b.diff(a, 'seconds');
+        if (scope.timer <= 0)
+          scope.auctions.shift();
+        
       };
       this.$http.get("/api/auctions/current/current")
       .then(response => {

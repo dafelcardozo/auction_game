@@ -16,6 +16,7 @@
   "strict": true,
   "trailing": true,
   "smarttabs": true,
+  "multistr": true,
   "ignoreDelimiters": [
     { "start": "start-non-standard", "end": "end-non-standard" }
   ],
