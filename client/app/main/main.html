@@ -1,6 +1,6 @@
 <div layout="row">
   
-<div flex-xs flex-gt-xs="50" layout="column" >
+<div flex-xs  layout="column" flex="50">
   <md-toolbar >
     <h2 class="md-toolbar-tools">
       <span>Your inventory</span>
@@ -25,11 +25,13 @@
     </md-card-actions>
   </md-card>
 </md-content>
-
 </div>
-
-<div layout="column">
+ <div flex>
+   <md-content></md-content>
+ </div>
+<div layout="column" flex="50">
   <md-toolbar class="md-theme-light" >
+      <span flex></span>
   <h2 class="md-toolbar-tools">
     <span>Current Auction</span>
   </h2>
@@ -37,13 +39,18 @@
 <md-content>
   <p ng-hide="auctions.length">No auction at the moment.</p>
   <div ng-show="auctions.length" ng-repeat="auction in auctions">
+    <p>Time to: in {{timer}} seconds</p>
     <p>Seller: {{auction.User.name}}</p>
     <p><img src="{{auction.Item.image}}" alt="{{auction.Item.image}}"></p>
     <p>Item: {{auction.Item.name}}</p>
     <p>Quantity: {{auction.quantity}}</p>
     <p>Minimum bid: {{auction.minimum_bid}}</p>
-    <p>Time to: in {{timer}} seconds</p>
-    <md-button>Place bid</md-button>
+    <p>Winning bid: ---?</p>
+    <md-input-container class="md-block">
+      <input ng-model="bid" placeholder="Set a bid" type="number">
+      <md-button ng-click="placeBid(auction)">Place bid</md-button>
+    </md-input-container>
+    
   </div>
 </md-content>
 </div>

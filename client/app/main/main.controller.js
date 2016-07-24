@@ -42,6 +42,18 @@
 
     $scope.currentAuction();
 
+    $scope.bid;
+
+    $scope.placeBid = function (auction) {
+      console.info("placeBid");
+      $scope.getCurrentUser(u => 
+        $http.post('/api/bids', {
+          AuctionId:auction.id,
+          value:$scope.bid, 
+          UserId:u._id
+      }).then(response => console.info("bid placed")));
+      
+    }
 
     $scope.startAuction = function (ev, item) {
       var useFullScreen = true;
