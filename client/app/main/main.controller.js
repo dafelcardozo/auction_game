@@ -12,16 +12,15 @@
       });    
 
     $scope.currentAuction = function() {
-      let scope = $scope;
+      //let scope = $scope;
       let timeToExpireFirst = function() {
         if ($scope.auctions.length) {
           var a = moment(new Date());
-          var b = moment(scope.auctions[0].expiresAt);
-          scope.timer = b.diff(a, 'seconds');
-          if (scope.timer <= 0)
-            scope.auctions.shift();
-        }
-        
+          var b = moment($scope.auctions[0].expiresAt);
+          $scope.timer = b.diff(a, 'seconds');
+          if ($scope.timer <= 0)
+            $scope.auctions.shift();
+          }
       };
       $http.get("/api/auctions/current/current")
       .then(response => {
@@ -45,7 +44,6 @@
     $scope.bid;
 
     $scope.placeBid = function (auction) {
-      console.info("placeBid");
       $scope.getCurrentUser(u => 
         $http.post('/api/bids', {
           AuctionId:auction.id,
