@@ -1,4 +1,5 @@
-<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarController">
+<!--
+<div class="navbar navbar-default navbar-static-top" >
   <div class="container">
     <div class="navbar-header">
       <button class="navbar-toggle" type="button" ng-click="nav.isCollapsed = !nav.isCollapsed">
@@ -27,3 +28,15 @@
     </div>
   </div>
 </div>
+-->
+<md-toolbar ng-controller="NavbarController">
+  <div class="md-toolbar-tools" ng-controller="toolbarCtrl" ngCloak>
+    <span>This is my angular App</span>
+    <div ng-hide="nav.isLoggedIn()" ng-class="{active: nav.isActive('/login')}"><a href="/login">Login</a></div>
+    <div ng-show="nav.isLoggedIn()"><p class="navbar-text">Hello {{ nav.getCurrentUser().name }}</p> </div>
+    <img ng-show="nav.isLoggedIn()" src="assets/images/coin.jpg" width="50" height="50" alt="coins">
+    <md-button href="/logout" ng-show="nav.isLoggedIn()">
+      Logout
+    </md-button>
+  </div>
+</md-toolbar>

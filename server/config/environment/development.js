@@ -6,11 +6,12 @@ module.exports = {
 
   // Sequelize connection opions
   sequelize: {
-    dialect:'mysql',
+  //  dialect:'mysql',
     driver:'mysql',
     user:'root',
     host:'localhost',
     uri: 'auction_game',
+    logging: false,
     options: {
       logging: false,
       storage: 'dev.mysql',

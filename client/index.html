@@ -28,26 +28,9 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-
-<md-toolbar>
-
-  <div class="md-toolbar-tools" ng-controller="toolbarCtrl">
-    <span>This is my angular App</span>
-    <span flex></span>
-    {{user}}, you have {{amount}}
-    <img src="assets/images/coin.jpg" width="50" height="50" alt="coins">
-    <md-button>
-      Logout
-    </md-button>
-  </div>
-</md-toolbar>
-<div class="container" layout="row" 
->
-  <md-sidenav md-is-locked-open="true" >Sidenav</md-sidenav>
-  <md-content id="content"  >
-    <div ng-view=""></div>
-    </md-content>
-</div>
+<navbar></navbar>
+<!--     <md-sidenav md-is-locked-open="true" >Sidenav</md-sidenav> -->
+    <ng-view></ng-view>
 
     <!-- <footer></footer> -->
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

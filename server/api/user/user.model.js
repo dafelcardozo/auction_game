@@ -26,6 +26,10 @@ module.exports = function(sequelize, DataTypes) {
         isEmail: true
       }
     },
+    balance: {
+      type:DataTypes.INTEGER,
+      defaultValue:1000
+    },
     role: {
       type: DataTypes.STRING,
       defaultValue: 'user'
@@ -37,14 +41,17 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     provider: DataTypes.STRING,
-    salt: DataTypes.STRING,
-    /*
-    facebook: DataTypes.JSON,
-    twitter: DataTypes.JSON,
-    google: DataTypes.JSON,
-    github: DataTypes.JSON
-*/
-  }, {
+    salt: DataTypes.STRING
+  }, 
+
+  {
+      classMethods: {
+        associate: function(models) {
+          User.hasMany(models.Inventory);
+          User.hasMany(models.Auction);
+          User.hasMany(models.Bid);
+        }
+      },
 
     /**
      * Virtual Getters

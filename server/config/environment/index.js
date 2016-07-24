@@ -25,7 +25,7 @@ var all = {
   ip: process.env.IP || '0.0.0.0',
 
   // Should we populate the DB with sample data?
-  seedDB: false,
+  seedDB: true,
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
@@ -33,14 +33,14 @@ var all = {
   },
 
   // MongoDB connection options
-  mongo: {
-    options: {
-      db: {
-        safe: true
-      }
-    }
-  },
-
+  // mongo: {
+  //   options: {
+  //     db: {
+  //       safe: true
+  //     }
+  //   }
+  // },
+// 
   facebook: {
     clientID:     process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',

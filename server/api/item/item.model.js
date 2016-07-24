@@ -1,7 +1,7 @@
 'use strict';
 
 export default function(sequelize, DataTypes) {
-  return sequelize.define('Item', {
+  var Item =  sequelize.define('Item', {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -10,10 +10,14 @@ export default function(sequelize, DataTypes) {
     },
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    created_at:DataTypes.DATE,
-    image:DataTypes.BLOB
-
-    //,
-    //active: DataTypes.BOOLEAN
-  });
+    image:DataTypes.TEXT
+  },
+    {classMethods: {
+        associate: function(models) {
+          Item.hasMany(models.Inventory);
+          Item.hasMany(models.Auction);
+        }
+      }
+    });
+  return Item;
 }
