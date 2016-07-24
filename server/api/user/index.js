@@ -42,20 +42,15 @@ router.get('/:id/inventory', function (req, res) {
 	.catch(handleError(res));
 });
 router.get('/:id/inventory/gift', function (req, res) {
-   var userId = req.params.id;
-   console.info("En la función de inventorio, hacer valer el regalo para el usuario: "+req.params.id);
-  
+   //var userId = req.params.id;  
   return Item.findAll()
   .then(function (inventories){
-    console.info("Obtuvo: "+inventories);
     let ii = inventories.map(function(item) {  
-        console.info("item: "+item);
         return {
-        UserId:userId, 
+        UserId:req.params.id, 
         ItemId:item.id
       }
     });
-    console.info("transforma a: "+ii);
     return Inventory
     .bulkCreate(ii)
     .then(() => 
