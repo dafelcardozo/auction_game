@@ -100,6 +100,20 @@ export function update(req, res) {
     .catch(handleError(res));
 }
 
+export function current(req, res) {
+  console.info("looking for the current auction");
+  return Auction.find({
+    where: {
+      expiresAt: {
+         $lt: new Date()
+      }
+    }
+  })
+  // .then(handleEntityNotFound(res))
+  .then(respondWithResult(res))
+  .catch(handleError(res));
+}
+
 // Deletes a Auction from the DB
 export function destroy(req, res) {
   return Auction.find({

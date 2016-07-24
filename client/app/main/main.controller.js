@@ -15,74 +15,83 @@
       });
     }
 
-    setAuction(a) {
-      this.auction = a;
-    }
-
     $onInit() {
       let scope = this;
+      console.info("pissing in my vagina");
+
       this.socket.syncUpdates('auction', this.auctions, (m, a) => scope.a = a);
       this.getCurrentUser(u => this.$http.get('/api/users/'+u._id+'/inventory')
       .then(response => this.items = response.data));
+      console.info("pissing in my popo");
+      this.currentAuction();
     }
 
+    currentAuction() {
+      let pipi = this;
+      console.info("pissing in my shit");
+      this.$http.get("/api/auctions/current/current")
+      .then(response => {
+        console.info("Setted auction: "+response.data);
+        this.auctions = response.data; 
 
-  startAuction(ev, item) {
-    var useFullScreen = true;
-    let io = this.socket;
-
-    function DialogController($scope, $mdDialog, $http, Auth, socket) {
-      $scope.item = item;
-      $scope.quantity;
-      $scope.minimum_bid;
-      $scope.getCurrentUser = Auth.getCurrentUser;
-      $scope.socket = socket;
-
-      $scope.hide = function() {
-        $mdDialog.hide();
-      };
-      $scope.cancel = function() {
-        $mdDialog.cancel();
-      };
-      $scope.answer = function(answer) {
-        $mdDialog.hide(answer);
-      };
-      $scope.start = function() {
-        $scope.getCurrentUser(u =>{
-          $http.post("/api/auctions/", {
-            minimum_bid:$scope.minimum_bid,
-            quantity:$scope.quantity,
-            ItemId:$scope.item.id,
-            UserId:u._id
-          }).then(function (response) {
-            $mdDialog.cancel();
-            io.socket.emit('auctions', response.data);
-          });        
-        });
-      };
+      });
     }
 
+    startAuction(ev, item) {
+      var useFullScreen = true;
+      let io = this.socket;
 
-    this.$mdDialog.show({
-      controller: DialogController,
-      templateUrl: 'dialog.html',
-      parent: angular.element(document.body),
-      targetEvent: ev,
-      clickOutsideToClose:true,
-      fullscreen: useFullScreen
-    })
-    .then(function(answer) {
-      // $scope.status = 'You said the information was "' + answer + '".';
-    }, function() {
-      // $scope.status = 'You cancelled the dialog.';
-    });
-    // // $scope.$watch(function() {
-    // //   return $mdMedia('xs') || $mdMedia('sm');
-    // // }, function(wantsFullScreen) {
-    // //   $scope.customFullscreen = (wantsFullScreen === true);
-    // // });
+      function DialogController($scope, $mdDialog, $http, Auth, socket) {
+        $scope.item = item;
+        $scope.quantity;
+        $scope.minimum_bid;
+        $scope.getCurrentUser = Auth.getCurrentUser;
+        $scope.socket = socket;
+
+        $scope.hide = function() {
+          $mdDialog.hide();
+        };
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+        $scope.answer = function(answer) {
+          $mdDialog.hide(answer);
+        };
+        $scope.start = function() {
+          $scope.getCurrentUser(u =>{
+            $http.post("/api/auctions/", {
+              minimum_bid:$scope.minimum_bid,
+              quantity:$scope.quantity,
+              ItemId:$scope.item.id,
+              UserId:u._id
+            }).then(function (response) {
+              $mdDialog.cancel();
+              io.socket.emit('auctions', response.data);
+            });        
+          });
+        };
+      }
+
+      this.$mdDialog.show({
+        controller: DialogController,
+        templateUrl: 'dialog.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose:true,
+        fullscreen: useFullScreen
+      })
+      .then(function(answer) {
+        // $scope.status = 'You said the information was "' + answer + '".';
+      }, function() {
+        // $scope.status = 'You cancelled the dialog.';
+      });
+      // // $scope.$watch(function() {
+      // //   return $mdMedia('xs') || $mdMedia('sm');
+      // // }, function(wantsFullScreen) {
+      // //   $scope.customFullscreen = (wantsFullScreen === true);
+      // // });
+    }
   }
-}
 
 angular.module('auctionGameApp')
   .component('main', {

@@ -11,7 +11,11 @@ export default function(sequelize, DataTypes) {
       autoIncrement: true
     },
     minimum_bid:DataTypes.INTEGER,
-    quantity:DataTypes.INTEGER
+    quantity:DataTypes.INTEGER,
+    expiresAt:{
+      type:DataTypes.DATE,
+      defaultValue:new Date(new Date() +  90 * 1000)
+    }
   }, {
     classMethods: {
       associate: function(models) {
